@@ -6,19 +6,13 @@ namespace PedidosMVC.Controllers
     public class OrdersController : Controller
     {
         private static List<Order> _orders = new();
+        // Simulación de productos en memoria
+        private static List<Product> _products = ProductsController._products;
 
         // GET: /Orders
         public IActionResult Index()
         {
             return View(_orders);
-        }
-
-        // GET: /Orders/Details/5
-        public IActionResult Details(int id)
-        {
-            var order = _orders.FirstOrDefault(o => o.Id == id);
-            if (order == null) return NotFound();
-            return View(order);
         }
 
         // GET: /Orders/Create
@@ -30,15 +24,37 @@ namespace PedidosMVC.Controllers
         // POST: /Orders/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Order order)
+        public IActionResult Create(Order order, List<OrderItem> items)
         {
-            if (ModelState.IsValid)
+            // Validar stock antes de procesar el pedido
+            foreach (var item in items)
             {
-                order.Id = _orders.Count > 0 ? _orders.Max(o => o.Id) + 1 : 1;
-                _orders.Add(order);
-                return RedirectToAction(nameof(Index));
+                var producto = _products.FirstOrDefault(p => p.Id == item.Producto);
+                if (producto == null)
+                {
+                    ModelState.AddModelError("", $"Producto con ID {item.Producto} no encontrado.");
+                }
+                else if (item.Cantidad > producto.Stock)
+                {
+                    ModelState.AddModelError("", $"Stock insuficiente para el producto {producto.Nombre}.");
+                }
             }
-            return View(order);
+
+            if (!ModelState.IsValid)
+            {
+                return View(order);
+            }
+
+            // Descontar stock solo si la validación fue exitosa
+            foreach (var item in items)
+            {
+                var producto = _products.First(p => p.Id == item.Producto);
+                producto.Stock -= item.Cantidad;
+            }
+
+            order.Id = _orders.Count > 0 ? _orders.Max(o => o.Id) + 1 : 1;
+            _orders.Add(order);
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: /Orders/Edit/5
