@@ -15,6 +15,6 @@ namespace PedidosMVC.Models
 
         [Required(ErrorMessage = "El stock es obligatorio")]
         [Range(0, int.MaxValue, ErrorMessage = "El stock debe ser mayor o igual a 0")]
-        public string Stock { get; set; }
+        public int Stock { get; set; }
     }
 }
