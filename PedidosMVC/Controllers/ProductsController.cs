@@ -5,7 +5,7 @@ namespace PedidosMVC.Controllers
 {
     public class ProductsController : Controller
     {
-        private static List<Product> _products = new();
+        public static List<Product> _products = new();
 
         // GET: /Products
         public IActionResult Index()

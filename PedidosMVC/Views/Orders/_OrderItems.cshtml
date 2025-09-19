@@ -1,0 +1,21 @@
+@model IEnumerable<PedidosMVC.Models.OrderItem>
+<h2>Productos en el Pedido</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.Producto</td>
+        <td>@item.Cantidad</td>
+        <td>@item.Subtotal.ToString("C")</td>
+    </tr>
+}
+    </tbody>
+</table>

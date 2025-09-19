@@ -1,17 +1,18 @@
-@model IEnumerable<PedidosMVC.Models.Product>
+﻿@page
+@model IEnumerable<PedidosMVC.Models.User>
 @{
-    ViewData["Title"] = "Productos";
+    ViewData["Title"] = "Usuarios";
 }
-<h1>Productos</h1>
+<h1>Usuarios</h1>
 <p>
-    <a asp-action="Create" class="btn btn-primary">Crear Nuevo Producto</a>
+    <a asp-action="Create" class="btn btn-primary">Crear Nuevo Usuario</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>Nombre</th>
-            <th>Precio</th>
-            <th>Stock</th>
+            <th>Email</th>
+            <th>Dirección</th>
             <th></th>
         </tr>
     </thead>
@@ -20,8 +21,8 @@
 {
     <tr>
         <td>@item.Nombre</td>
-        <td>@item.Precio.ToString("C")</td>
-        <td>@item.Stock</td>
+        <td>@item.Email</td>
+        <td>@item.Direccion</td>
         <td>
             <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
             <a asp-action="Details" asp-route-id="@item.Id">Detalles</a> |
