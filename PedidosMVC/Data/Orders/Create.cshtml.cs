@@ -19,9 +19,6 @@ namespace PedidosMVC.Pages.Orders
             if (!ModelState.IsValid)
                 return Page();
 
-            // Guardar en la base de datos aquí
-            // Ejemplo: _context.Orders.Add(Order); _context.SaveChanges();
-
             return RedirectToPage("Index");
         }
     }

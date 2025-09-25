@@ -15,12 +15,8 @@ namespace PedidosMVC.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configuración básica de relaciones (ajusta según tus necesidades)
             base.OnModelCreating(modelBuilder);
 
-            // Ejemplo de relación: un pedido puede tener muchos OrderItems
-            // y un OrderItem pertenece a un Order y a un Product
-            // (Ajusta si tienes propiedades de navegación en tus modelos)
         }
     }
 }

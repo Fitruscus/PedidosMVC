@@ -8,7 +8,6 @@ namespace PedidosMVC.Views.Users
 {
     public class DeleteModel : PageModel
     {
-        // Simulación de datos en memoria SOLO para pruebas
         public static List<User> Users = new List<User>
         {
             new User { Id = 1, Nombre = "Juan", Email = "juan@mail.com", Direccion = "Calle 1" },

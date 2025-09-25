@@ -10,8 +10,6 @@ namespace PedidosMVC.Pages.Orders
 
         public void OnGet()
         {
-            // Obtener los pedidos de la base de datos
-            // Orders = _context.Orders.ToList();
         }
     }
 }

@@ -112,7 +112,7 @@ namespace PedidosMVC.Controllers
             var orderItem = _context.OrderItems.FirstOrDefault(oi => oi.OrderId == order.Id);
             if (orderItem != null)
             {
-                // Si cambió el producto, actualiza y ajusta stock
+              
                 if (orderItem.ProductId != ProductId)
                 {
                     // Regresa stock anterior

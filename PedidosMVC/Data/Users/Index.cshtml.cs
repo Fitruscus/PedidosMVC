@@ -10,8 +10,6 @@ namespace PedidosMVC.Pages.Users
 
         public void OnGet()
         {
-            // Aquí deberías obtener los usuarios de la base de datos usando el DbContext
-            // Ejemplo: Users = _context.Users.ToList();
         }
     }
 }
