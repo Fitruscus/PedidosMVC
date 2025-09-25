@@ -1,18 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PedidosMVC.Models;
+using PedidosMVC.Data;
+using System.Linq;
 
 namespace PedidosMVC.Controllers
 {
     public class OrdersController : Controller
     {
-        private static List<Order> _orders = new();
-        // Simulación de productos en memoria
-        private static List<Product> _products = ProductsController._products;
+        private readonly PedidosDbContext _context;
+
+        public OrdersController(PedidosDbContext context)
+        {
+            _context = context;
+        }
 
         // GET: /Orders
         public IActionResult Index()
         {
-            return View(_orders);
+            var orders = _context.Orders.ToList();
+            return View(orders);
+        }
+
+        // GET: /Orders/Details/5
+        public IActionResult Details(int id)
+        {
+            var order = _context.Orders.Find(id);
+            if (order == null) return NotFound();
+            return View(order);
         }
 
         // GET: /Orders/Create
@@ -24,43 +38,21 @@ namespace PedidosMVC.Controllers
         // POST: /Orders/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Order order, List<OrderItem> items)
+        public IActionResult Create(Order order)
         {
-            // Validar stock antes de procesar el pedido
-            foreach (var item in items)
+            if (ModelState.IsValid)
             {
-                var producto = _products.FirstOrDefault(p => p.Id == item.Producto);
-                if (producto == null)
-                {
-                    ModelState.AddModelError("", $"Producto con ID {item.Producto} no encontrado.");
-                }
-                else if (item.Cantidad > producto.Stock)
-                {
-                    ModelState.AddModelError("", $"Stock insuficiente para el producto {producto.Nombre}.");
-                }
+                _context.Orders.Add(order);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
             }
-
-            if (!ModelState.IsValid)
-            {
-                return View(order);
-            }
-
-            // Descontar stock solo si la validación fue exitosa
-            foreach (var item in items)
-            {
-                var producto = _products.First(p => p.Id == item.Producto);
-                producto.Stock -= item.Cantidad;
-            }
-
-            order.Id = _orders.Count > 0 ? _orders.Max(o => o.Id) + 1 : 1;
-            _orders.Add(order);
-            return RedirectToAction(nameof(Index));
+            return View(order);
         }
 
         // GET: /Orders/Edit/5
         public IActionResult Edit(int id)
         {
-            var order = _orders.FirstOrDefault(o => o.Id == id);
+            var order = _context.Orders.Find(id);
             if (order == null) return NotFound();
             return View(order);
         }
@@ -72,11 +64,8 @@ namespace PedidosMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                var existing = _orders.FirstOrDefault(o => o.Id == id);
-                if (existing == null) return NotFound();
-                existing.Cliente = order.Cliente;
-                existing.Estado = order.Estado;
-                existing.Fecha = order.Fecha;
+                _context.Orders.Update(order);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             return View(order);
@@ -85,7 +74,7 @@ namespace PedidosMVC.Controllers
         // GET: /Orders/Delete/5
         public IActionResult Delete(int id)
         {
-            var order = _orders.FirstOrDefault(o => o.Id == id);
+            var order = _context.Orders.Find(id);
             if (order == null) return NotFound();
             return View(order);
         }
@@ -95,9 +84,10 @@ namespace PedidosMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            var order = _orders.FirstOrDefault(o => o.Id == id);
+            var order = _context.Orders.Find(id);
             if (order == null) return NotFound();
-            _orders.Remove(order);
+            _context.Orders.Remove(order);
+            _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
     }

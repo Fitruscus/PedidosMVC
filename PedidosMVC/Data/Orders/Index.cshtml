@@ -6,35 +6,41 @@
 }
 
 <h1>Pedidos</h1>
-
 <p>
-    <a asp-page="Create" class="btn btn-primary">Crear Pedido</a>
+    <a asp-page="Create" class="btn btn-success">
+        <i class="fa fa-plus"></i> Nuevo Pedido
+    </a>
 </p>
-
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>ID</th>
             <th>Cliente</th>
             <th>Estado</th>
             <th>Fecha</th>
-            <th></th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Orders)
-        {
-            <tr>
-                <td>@item.Id</td>
-                <td>@item.Cliente</td>
-                <td>@item.Estado</td>
-                <td>@item.Fecha.ToShortDateString()</td>
-                <td>
-                    <a asp-page="Details" asp-route-id="@item.Id">Detalles</a> |
-                    <a asp-page="Edit" asp-route-id="@item.Id">Editar</a> |
-                    <a asp-page="Delete" asp-route-id="@item.Id">Eliminar</a>
-                </td>
-            </tr>
-        }
+@foreach (var item in Model.Orders)
+{
+    <tr>
+        <td>@item.Id</td>
+        <td>@item.Cliente</td>
+        <td>@item.Estado</td>
+        <td>@item.Fecha.ToShortDateString()</td>
+        <td>
+            <a asp-page="Edit" asp-route-id="@item.Id" title="Editar" class="text-warning me-2">
+                <i class="fa fa-edit"></i>
+            </a>
+            <a asp-page="Details" asp-route-id="@item.Id" title="Detalles" class="text-info me-2">
+                <i class="fa fa-info-circle"></i>
+            </a>
+            <a asp-page="Delete" asp-route-id="@item.Id" title="Eliminar" class="text-danger">
+                <i class="fa fa-trash"></i>
+            </a>
+        </td>
+    </tr>
+}
     </tbody>
 </table>

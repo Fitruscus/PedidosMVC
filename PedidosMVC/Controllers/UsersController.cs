@@ -1,22 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PedidosMVC.Models;
+using PedidosMVC.Data;
+using System.Linq;
 
 namespace PedidosMVC.Controllers
 {
     public class UsersController : Controller
     {
-        private static List<User> _users = new();
+        private readonly PedidosDbContext _context;
+
+        public UsersController(PedidosDbContext context)
+        {
+            _context = context;
+        }
 
         // GET: /Users
         public IActionResult Index()
         {
-            return View(_users);
+            var users = _context.Users.ToList();
+            return View(users);
         }
 
         // GET: /Users/Details/5
         public IActionResult Details(int id)
         {
-            var user = _users.FirstOrDefault(u => u.Id == id);
+            var user = _context.Users.Find(id);
             if (user == null) return NotFound();
             return View(user);
         }
@@ -34,8 +42,8 @@ namespace PedidosMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                user.Id = _users.Count > 0 ? _users.Max(u => u.Id) + 1 : 1;
-                _users.Add(user);
+                _context.Users.Add(user);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             return View(user);
@@ -44,7 +52,7 @@ namespace PedidosMVC.Controllers
         // GET: /Users/Edit/5
         public IActionResult Edit(int id)
         {
-            var user = _users.FirstOrDefault(u => u.Id == id);
+            var user = _context.Users.Find(id);
             if (user == null) return NotFound();
             return View(user);
         }
@@ -56,11 +64,8 @@ namespace PedidosMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                var existing = _users.FirstOrDefault(u => u.Id == id);
-                if (existing == null) return NotFound();
-                existing.Nombre = user.Nombre;
-                existing.Email = user.Email;
-                existing.Direccion = user.Direccion;
+                _context.Users.Update(user);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             return View(user);
@@ -69,7 +74,7 @@ namespace PedidosMVC.Controllers
         // GET: /Users/Delete/5
         public IActionResult Delete(int id)
         {
-            var user = _users.FirstOrDefault(u => u.Id == id);
+            var user = _context.Users.Find(id);
             if (user == null) return NotFound();
             return View(user);
         }
@@ -79,9 +84,10 @@ namespace PedidosMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            var user = _users.FirstOrDefault(u => u.Id == id);
+            var user = _context.Users.Find(id);
             if (user == null) return NotFound();
-            _users.Remove(user);
+            _context.Users.Remove(user);
+            _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
     }

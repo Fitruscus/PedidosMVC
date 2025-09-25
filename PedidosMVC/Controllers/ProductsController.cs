@@ -1,24 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PedidosMVC.Models;
+using PedidosMVC.Data;
 
 namespace PedidosMVC.Controllers
 {
     public class ProductsController : Controller
     {
-        public static List<Product> _products = new();
+        private readonly PedidosDbContext _context;
+
+        public ProductsController(PedidosDbContext context)
+        {
+            _context = context;
+        }
 
         // GET: /Products
         public IActionResult Index()
         {
-            return View(_products);
-        }
-
-        // GET: /Products/Details/5
-        public IActionResult Details(int id)
-        {
-            var product = _products.FirstOrDefault(p => p.Id == id);
-            if (product == null) return NotFound();
-            return View(product);
+            var products = _context.Products.ToList();
+            return View(products);
         }
 
         // GET: /Products/Create
@@ -34,8 +33,8 @@ namespace PedidosMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                product.Id = _products.Count > 0 ? _products.Max(p => p.Id) + 1 : 1;
-                _products.Add(product);
+                _context.Products.Add(product);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
@@ -44,7 +43,7 @@ namespace PedidosMVC.Controllers
         // GET: /Products/Edit/5
         public IActionResult Edit(int id)
         {
-            var product = _products.FirstOrDefault(p => p.Id == id);
+            var product = _context.Products.Find(id);
             if (product == null) return NotFound();
             return View(product);
         }
@@ -56,11 +55,8 @@ namespace PedidosMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                var existing = _products.FirstOrDefault(p => p.Id == id);
-                if (existing == null) return NotFound();
-                existing.Nombre = product.Nombre;
-                existing.Precio = product.Precio;
-                existing.Stock = product.Stock;
+                _context.Products.Update(product);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
@@ -69,7 +65,7 @@ namespace PedidosMVC.Controllers
         // GET: /Products/Delete/5
         public IActionResult Delete(int id)
         {
-            var product = _products.FirstOrDefault(p => p.Id == id);
+            var product = _context.Products.Find(id);
             if (product == null) return NotFound();
             return View(product);
         }
@@ -79,9 +75,10 @@ namespace PedidosMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            var product = _products.FirstOrDefault(p => p.Id == id);
+            var product = _context.Products.Find(id);
             if (product == null) return NotFound();
-            _products.Remove(product);
+            _context.Products.Remove(product);
+            _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
     }
