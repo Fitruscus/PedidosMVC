@@ -12,7 +12,7 @@
 @foreach (var item in Model)
 {
     <tr>
-        <td>@item.Producto</td>
+        <td>@item.Product?.Nombre</td>
         <td>@item.Cantidad</td>
         <td>@item.Subtotal.ToString("C")</td>
     </tr>

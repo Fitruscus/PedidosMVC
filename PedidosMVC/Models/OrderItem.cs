@@ -5,14 +5,12 @@ namespace PedidosMVC.Models
     public class OrderItem
     {
         public int Id { get; set; }
-
-        [Required]
-        public int Producto { get; set; }
-
-        [Range(1, int.MaxValue, ErrorMessage = "La cantidad debe ser mayor a 0")]
+        public int OrderId { get; set; }
+        public int ProductId { get; set; }
         public int Cantidad { get; set; }
+        public Order Order { get; set; }
+        public Product Product { get; set; }
 
-        [Range(0, double.MaxValue, ErrorMessage = "El subtotal debe ser positivo")]
-        public int Subtotal { get; set; }
+        public decimal Subtotal => (Product?.Precio ?? 0) * Cantidad;
     }
 }

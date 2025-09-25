@@ -11,6 +11,7 @@
     <thead>
         <tr>
             <th>Cliente</th>
+            <th>Producto(s)</th>
             <th>Estado</th>
             <th>Fecha</th>
             <th class="text-center">Acciones</th>
@@ -20,9 +21,15 @@
 @foreach (var item in Model)
 {
         <tr>
-            <td>@Html.DisplayFor(_ => item.Cliente)</td>
-            <td>@Html.DisplayFor(_ => item.Estado)</td>
-            <td>@Html.DisplayFor(_ => item.Fecha)</td>
+            <td>@item.Cliente</td>
+            <td>
+                @if (item.OrderItems != null && item.OrderItems.Any())
+                {
+                    @string.Join(", ", item.OrderItems.Select(oi => oi.Product?.Nombre))
+                }
+            </td>
+            <td>@item.Estado</td>
+            <td>@item.Fecha.ToShortDateString()</td>
             <td class="text-center">
                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary me-1" title="Editar" aria-label="Editar">
                     <i class="fa-solid fa-pen-to-square"></i>

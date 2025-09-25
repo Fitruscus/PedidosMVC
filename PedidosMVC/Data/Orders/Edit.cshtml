@@ -1,5 +1,4 @@
-﻿
-@model PedidosMVC.Models.Order
+﻿@model PedidosMVC.Models.Order
 @{
     ViewData["Title"] = "Editar Pedido";
 }
@@ -13,7 +12,12 @@
     </div>
     <div class="form-group">
         <label asp-for="Estado"></label>
-        <input asp-for="Estado" class="form-control" />
+        <select asp-for="Estado" class="form-control">
+            <option value="Pendiente">Pendiente</option>
+            <option value="Procesado">Procesado</option>
+            <option value="Enviado">Enviado</option>
+            <option value="Entregado">Entregado</option>
+        </select>
         <span asp-validation-for="Estado" class="text-danger"></span>
     </div>
     <div class="form-group">
