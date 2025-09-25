@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PedidosMVC.Models
 {
@@ -10,6 +11,7 @@ namespace PedidosMVC.Models
         [StringLength(100, ErrorMessage = "El nombre no puede superar los 100 caracteres")]
         public string Nombre { get; set; }
 
+        [Column(TypeName = "decimal(18,2)")]
         [Range(0.01, double.MaxValue, ErrorMessage = "El precio debe ser positivo")]
         public decimal Precio { get; set; }
 
