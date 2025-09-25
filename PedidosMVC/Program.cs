@@ -52,7 +52,25 @@ using (var scope = app.Services.CreateScope())
 
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
     var user = await userManager.FindByEmailAsync("admin@correo.com");
-    await userManager.AddToRoleAsync(user, "admin");
+    if (user == null)
+    {
+        user = new ApplicationUser
+        {
+            UserName = "admin@correo.com",
+            Email = "admin@correo.com",
+            EmailConfirmed = true
+        };
+        var result = await userManager.CreateAsync(user, "Admin123");
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(user, "admin");
+        }
+        
+    }
+    else
+    {
+        await userManager.AddToRoleAsync(user, "admin");
+    }
 }
 
 app.Run();

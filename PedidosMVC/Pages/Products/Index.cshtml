@@ -7,9 +7,7 @@
 
 <h1>Productos</h1>
 <p>
-    <a asp-page="Create" class="btn btn-success">
-        <i class="fa fa-plus"></i> Nuevo Producto
-    </a>
+    <a asp-page="Create" class="btn btn-primary">Crear nuevo</a>
 </p>
 <table class="table table-striped">
     <thead>
@@ -18,29 +16,29 @@
             <th>Nombre</th>
             <th>Precio</th>
             <th>Stock</th>
-            <th>Acciones</th>
+            <th class="text-center">Acciones</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model.Productos)
 {
-    <tr>
-        <td>@item.Id</td>
-        <td>@item.Nombre</td>
-        <td>@item.Precio.ToString("C")</td>
-        <td>@item.Stock</td>
-        <td>
-            <a asp-page="Edit" asp-route-id="@item.Id" title="Editar" class="text-warning me-2">
-                <i class="fa fa-edit"></i>
-            </a>
-            <a asp-page="Details" asp-route-id="@item.Id" title="Detalles" class="text-info me-2">
-                <i class="fa fa-info-circle"></i>
-            </a>
-            <a asp-page="Delete" asp-route-id="@item.Id" title="Eliminar" class="text-danger">
-                <i class="fa fa-trash"></i>
-            </a>
-        </td>
-    </tr>
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Nombre</td>
+            <td>@item.Precio.ToString("C")</td>
+            <td>@item.Stock</td>
+            <td class="text-center">
+                <a asp-page="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary me-1" title="Editar" aria-label="Editar">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+                <a asp-page="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info me-1" title="Detalles" aria-label="Detalles">
+                    <i class="fa-solid fa-eye"></i>
+                </a>
+                <a asp-page="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger" title="Eliminar" aria-label="Eliminar">
+                    <i class="fa-solid fa-trash"></i>
+                </a>
+            </td>
+        </tr>
 }
     </tbody>
 </table>
