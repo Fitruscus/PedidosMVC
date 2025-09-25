@@ -1,20 +1,21 @@
-﻿@page
 @model PedidosMVC.Models.Product
 @{
-    ViewData["Title"] = "Eliminar Producto";
+    ViewData["Title"] = "Eliminar producto";
 }
-<h1>Eliminar Producto</h1>
-<h3>¿Estás seguro de que deseas eliminar este producto?</h3>
+<h1>Eliminar</h1>
+<h3>¿Seguro que deseas eliminar este producto?</h3>
 <div>
+    <h4>Producto</h4>
+    <hr />
     <dl class="row">
-        <dt class="col-sm-2">Nombre</dt>
-        <dd class="col-sm-10">@Model.Nombre</dd>
-        <dt class="col-sm-2">Precio</dt>
-        <dd class="col-sm-10">@Model.Precio.ToString("C")</dd>
-        <dt class="col-sm-2">Stock</dt>
-        <dd class="col-sm-10">@Model.Stock</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(m => m.Nombre)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(m => m.Nombre)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(m => m.Precio)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(m => m.Precio)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(m => m.Stock)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(m => m.Stock)</dd>
     </dl>
-    <form asp-action="DeleteConfirmed" method="post">
+    <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <button type="submit" class="btn btn-danger">Eliminar</button>
         <a asp-action="Index" class="btn btn-secondary">Cancelar</a>

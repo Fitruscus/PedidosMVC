@@ -1,17 +1,21 @@
-﻿@model PedidosMVC.Models.User
+@model PedidosMVC.Models.User
 @{
-    ViewData["Title"] = "Detalles de Usuario";
+    ViewData["Title"] = "Detalles del usuario";
 }
-<h1>Detalles de Usuario</h1>
+<h1>Detalles</h1>
 <div>
+    <h4>Usuario</h4>
+    <hr />
     <dl class="row">
-        <dt class="col-sm-2">Nombre</dt>
-        <dd class="col-sm-10">@Model.Nombre</dd>
-        <dt class="col-sm-2">Email</dt>
-        <dd class="col-sm-10">@Model.Email</dd>
-        <dt class="col-sm-2">Dirección</dt>
-        <dd class="col-sm-10">@Model.Direccion</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(m => m.Nombre)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(m => m.Nombre)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(m => m.Email)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(m => m.Email)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(m => m.Direccion)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(m => m.Direccion)</dd>
     </dl>
+</div>
+<div>
     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
     <a asp-action="Index" class="btn btn-secondary">Volver</a>
 </div>

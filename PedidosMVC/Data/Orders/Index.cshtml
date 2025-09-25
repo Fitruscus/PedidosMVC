@@ -1,0 +1,40 @@
+@page
+@model PedidosMVC.Pages.Orders.IndexModel
+
+@{
+    ViewData["Title"] = "Pedidos";
+}
+
+<h1>Pedidos</h1>
+
+<p>
+    <a asp-page="Create" class="btn btn-primary">Crear Pedido</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Orders)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Cliente</td>
+                <td>@item.Estado</td>
+                <td>@item.Fecha.ToShortDateString()</td>
+                <td>
+                    <a asp-page="Details" asp-route-id="@item.Id">Detalles</a> |
+                    <a asp-page="Edit" asp-route-id="@item.Id">Editar</a> |
+                    <a asp-page="Delete" asp-route-id="@item.Id">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
