@@ -14,9 +14,27 @@ namespace PedidosMVC.Controllers
         }
 
         // GET: /Products
-        public IActionResult Index()
+        public IActionResult Index(string filtroNombre, string filtroCategoria, decimal? filtroPrecioMin, decimal? filtroPrecioMax)
         {
-            var products = _context.Products.ToList();
+            var query = _context.Products.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(filtroNombre))
+                query = query.Where(p => p.Nombre.Contains(filtroNombre));
+
+            if (!string.IsNullOrWhiteSpace(filtroCategoria))
+                query = query.Where(p => p.Categoria.Contains(filtroCategoria));
+
+            if (filtroPrecioMin.HasValue)
+                query = query.Where(p => p.Precio >= filtroPrecioMin.Value);
+
+            if (filtroPrecioMax.HasValue)
+                query = query.Where(p => p.Precio <= filtroPrecioMax.Value);
+
+            var products = query.ToList();
+            ViewBag.FiltroNombre = filtroNombre;
+            ViewBag.FiltroCategoria = filtroCategoria;
+            ViewBag.FiltroPrecioMin = filtroPrecioMin;
+            ViewBag.FiltroPrecioMax = filtroPrecioMax;
             return View(products);
         }
 
@@ -80,6 +98,14 @@ namespace PedidosMVC.Controllers
             _context.Products.Remove(product);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
+        }
+
+        // GET: /Products/Details/5
+        public IActionResult Details(int id)
+        {
+            var product = _context.Products.Find(id);
+            if (product == null) return NotFound();
+            return View(product);
         }
     }
 }

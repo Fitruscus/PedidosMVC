@@ -16,5 +16,8 @@ namespace PedidosMVC.Models
         [Required(ErrorMessage = "El stock es obligatorio")]
         [Range(0, int.MaxValue, ErrorMessage = "El stock debe ser mayor o igual a 0")]
         public int Stock { get; set; }
+
+        [StringLength(50, ErrorMessage = "La categoría no puede superar los 50 caracteres")]
+        public string Categoria { get; set; } 
     }
 }

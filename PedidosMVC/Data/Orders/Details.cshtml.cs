@@ -1,20 +1,34 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PedidosMVC.Models;
+using PedidosMVC.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace PedidosMVC.Pages.Orders
 {
     public class DetailsModel : PageModel
     {
-        public Order Order { get; set; }
+        private readonly PedidosDbContext _context;
 
-        public IActionResult OnGet(int id)
+        public DetailsModel(PedidosDbContext context)
         {
-            // Obtener el pedido de la base de datos
-            // Order = _context.Orders.Find(id);
-            if (Order == null)
-                return NotFound();
-            return Page();
+            _context = context;
+        }
+
+        public Order Order { get; set; }
+        public decimal Total { get; set; }
+
+        public void OnGet(int id)
+        {
+            Order = _context.Orders
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+                .FirstOrDefault(o => o.Id == id);
+
+            if (Order != null && Order.OrderItems != null)
+            {
+                Total = Order.OrderItems.Sum(oi => oi.Product.Precio * oi.Cantidad);
+            }
         }
     }
 }
